@@ -2,6 +2,7 @@ package com.coolzie.coolzie;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,7 +10,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,6 +28,10 @@ public class TempChart {
     private Map<String, Double> targetTemps = new HashMap<>();
 
     TempChart(Context ctx) {
+        loadResourceTempChart(ctx);
+    }
+
+    private void copyResourceToLocalAndLoad(Context ctx) {
         File localChart = new File(ctx.getFilesDir(), "temps.csv");
         if (!localChart.exists()) {
             Log.i(TAG, "Local temp chart not found; loading from resources.");
@@ -35,6 +43,30 @@ public class TempChart {
         }
 
         loadLocalTempChart(localChart);
+    }
+
+    private void loadResourceTempChart(Context ctx) {
+        InputStream in = ctx.getResources().openRawResource(R.raw.temps);
+
+        try {
+            if (in == null) {
+                String msg = "Cannot locate temp chart in resources.";
+                Log.e(TAG, msg);
+                throw new RuntimeException(msg);
+            }
+
+            loadTempChart(new BufferedReader(new InputStreamReader(in, "UTF-8")));
+
+        } catch (Exception e) {
+            String msg = "Could not load temp chart from resources.";
+            Log.e(TAG, msg, e);
+
+            Toast.makeText(ctx,msg + e.getMessage(), Toast.LENGTH_LONG).show();
+
+        } finally {
+            if (in != null) try { in.close(); } catch (IOException ioex) { /* ignore */ }
+        }
+
     }
 
     private void copyResourceTempChartToLocal(Context ctx, File localChart) {
@@ -67,10 +99,23 @@ public class TempChart {
 
     private void loadLocalTempChart(File localChart) {
         BufferedReader in = null;
+        try {
+            loadTempChart(in = new BufferedReader(new FileReader(localChart)));
+        } catch (IOException ioex) {
+            String msg = "Could not load temp chart from local file.";
+            Log.e(TAG, msg, ioex);
+            throw new RuntimeException(msg, ioex);
+
+        } finally {
+            if (in != null) try {
+                in.close();
+            } catch (IOException ioex) { /* ignore */ }
+        }
+    }
+
+    private void loadTempChart(BufferedReader in) {
         List<String> headings;
         try {
-            in = new BufferedReader(new FileReader(localChart));
-
             String heading = in.readLine();
             headings = Arrays.asList(heading.split(","));
 
@@ -90,8 +135,6 @@ public class TempChart {
             Log.e(TAG, msg, ioex);
             throw new RuntimeException(msg, ioex);
 
-        } finally {
-            if (in != null) try { in.close(); } catch (IOException ioex) { /* ignore */ }
         }
     }
 
