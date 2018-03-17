@@ -21,8 +21,7 @@ public class TempChart {
 
     private String TAG = "TempChart";
 
-    private Map<String, List<String>> timesTemps = new HashMap<>();
-    Map<String, Integer> startingTempsPositions = new HashMap<>();
+    private Map<String, Double> targetTemps = new HashMap<>();
 
     TempChart(Context ctx) {
         File localChart = new File(ctx.getFilesDir(), "temps.csv");
@@ -78,10 +77,13 @@ public class TempChart {
             String line;
             while ((line = in.readLine()) != null) {
                 List<String> lineTemps = Arrays.asList(line.split(","));
-                timesTemps.put(lineTemps.get(0), lineTemps.subList(1, lineTemps.size()-1));
+
+                String beverage = lineTemps.get(0);
+                Double targetTemp = Double.parseDouble(lineTemps.get(lineTemps.size()-1));
+                targetTemps.put(beverage, targetTemp);
             }
 
-            Log.i(TAG, "Loaded temp chart; " + timesTemps.size() + " beverages loaded");
+            Log.i(TAG, "Loaded temp chart; " + targetTemps.size() + " beverages loaded");
 
         } catch (IOException ioex) {
             String msg = "Could not load temp chart.";
@@ -91,32 +93,20 @@ public class TempChart {
         } finally {
             if (in != null) try { in.close(); } catch (IOException ioex) { /* ignore */ }
         }
-
-        List<String> startTemps = headings.subList(1, headings.size()-1);
-        for (int i = 0; i < startTemps.size(); i++) {
-            startingTempsPositions.put(startTemps.get(i), i);
-        }
     }
 
     List<String> getBeverages() {
-        List<String> bevs = new ArrayList<>(timesTemps.keySet());
+        List<String> bevs = new ArrayList<>(targetTemps.keySet());
         Collections.sort(bevs);
         return bevs;
     }
 
-    List<String> getStartingTemperatures() {
-        List<String> startTemps = new ArrayList<>(startingTempsPositions.keySet());
-        Collections.sort(startTemps);
-        return startTemps;
+    boolean hasBeverage(String beverage) {
+        return targetTemps.containsKey(beverage);
     }
 
-    int getChillTime(String beverage, String startingTemp) {
-        int tempPos = startingTempsPositions.get(startingTemp);
-        List<String> beverageTimes = timesTemps.get(beverage);
-        String chillTimeStr = beverageTimes.get(tempPos);
-
-        Log.i(TAG, "Found chill time for '" + beverage + "' starting at '" + chillTimeStr + "': " + chillTimeStr);
-        return Integer.parseInt(chillTimeStr);
+    Double getTargetTemp(String beverage) {
+        return targetTemps.get(beverage);
     }
 
 }

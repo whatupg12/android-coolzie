@@ -5,10 +5,11 @@
     <string name="new_button">New</string>
     <string name="favorites_button">Favorites</string>
     <string name="beverage_text_field_sample">Beverage</string>
-    <string name="idea_temp_text_field_sample">Ideal Temp</string>
-    <string name="room_temp_text_field_sample">Room Temp</string>
+    <string name="idea_temp_text_field_sample">Ideal</string>
+    <string name="room_temp_text_field_sample">Room</string>
     <string name="start_button">Chill!</string>
     <string name="title_activity_bottle_selection">BottleSelectionActivity</string>
-    <string name="timer_message">Chillin\'</string>
     <string name="no_time_set_message">No chill time set!</string>
+    <string name="chill_time_hint">Chill Time</string>
+    <string name="ready_to_serve">Ready to Serve!</string>
 </resources>

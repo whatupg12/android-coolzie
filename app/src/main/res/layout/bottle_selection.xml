@@ -16,25 +16,59 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:inputType="text" />
+            android:hint="@string/beverage_text_field_sample"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:textSize="30sp" />
 
-        <Spinner
-            android:id="@+id/roomTempSpinner"
-            android:layout_width="wrap_content"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/roomTempatureEditText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:minWidth="300dp" />
+            android:ems="10"
+            android:hint="@string/room_temp_text_field_sample"
+            android:inputType="numberDecimal"
+            android:text="70.0"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="30sp" />
 
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="60sp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/red_to_blue_arrow" />
+
+        <EditText
+            android:id="@+id/targetTempEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/idea_temp_text_field_sample"
+            android:inputType="numberDecimal"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="30sp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/timeToChillTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:hint="@string/chill_time_hint"
         android:textAlignment="center"
         android:textColor="@android:color/holo_blue_light"
-        android:textSize="30sp" />
+        android:textSize="25sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
