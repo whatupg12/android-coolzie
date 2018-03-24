@@ -12,4 +12,5 @@
     <string name="no_time_set_message">No chill time set!</string>
     <string name="chill_time_hint">Chill Time</string>
     <string name="ready_to_serve">Ready to Serve!</string>
+    <string name="beverage_instruction">Select or Enter Your Beverage:</string>
 </resources>
