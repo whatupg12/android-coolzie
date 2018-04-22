@@ -44,7 +44,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="newButtonClicked"
             android:text="@string/new_button"
             tools:layout_editor_absoluteX="190dp"
             tools:layout_editor_absoluteY="25dp" />
